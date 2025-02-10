@@ -1,0 +1,138 @@
+{% load static %}
+{% load omfilters %}
+
+{% comment %} <!-- Novo Header -->
+<div class="header-info bg-dark text-white py-2" style="font-weight: 600;">
+    <div class="container text-center">
+        <p class="mb-0">🔥 Oferta Especial: Descontos de até 50% em acessórios para motos! | Frete grátis para compras acima de R$ 150,00 🚚 | Suporte 24/7: (43) 99634-1638</p>
+    </div>
+</div>
+
+
+
+<!-- Navbar existente -->
+<nav class="navbar navbar-light bg-white navbar-expand-lg shadow-sm">
+    <a class="navbar-brand" href="{% url 'produto:lista' %}">
+        <img src="{% static 'img/Logo.png' %}" alt="EstiloPronto" style="height: 80px; width: 350px;">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            {% if request.user.is_authenticated %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Conta
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item text-dark" href="{% url 'pedido:lista' %}">Meus pedidos</a>
+                    <a class="dropdown-item text-dark" href="{% url 'perfil:criar' %}">Atualizar meus dados</a>
+                    <a class="dropdown-item text-dark" href="{% url 'perfil:logout' %}">Sair</a>
+                </div>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{% url 'perfil:criar' %}">Entrar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{% url 'perfil:criar' %}">Criar conta</a>
+            </li>
+            {% endif %}
+
+            {% if request.session.carrinho %}
+            <li class="nav-item">
+                <a class="nav-link nav-cart-link active text-dark" href="{% url 'produto:carrinho' %}">
+                    <span class="nav-cart-text mr-1">
+                        Carrinho
+                    </span>
+                    <span class="nav-cart-count mr-1">
+                        <strong>{{ request.session.carrinho|cart_total_qtd }}x</strong>
+                    </span>
+                    <span class="nav-cart-icon mr-2">
+                        <i class="fas fa-shopping-cart"></i>
+                    </span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+        <form class="form-inline my-2 my-lg-0" method="GET" action="{% url 'produto:busca' %}">
+            <input name="termo" value="{{ request.GET.termo }}" class="form-control mr-sm-2" type="search"
+                placeholder="Busca" aria-label="Busca">
+                <style>
+                    .btn-custom {
+                      background-color: #007bff; /* Azul personalizado */
+                      border: none; /* Remove a borda padrão */
+                      color: white; /* Cor do texto */
+                      font-weight: bold; /* Texto em negrito */
+                      font-size: 1.1rem; /* Tamanho da fonte */
+                      display: flex; /* Flexbox para alinhar o ícone centralizado */
+                      align-items: center; /* Alinha o ícone verticalmente */
+                      justify-content: center; /* Alinha o ícone horizontalmente */
+                    }
+                  
+                    .btn-custom:hover {
+                      background-color: #0056b3; /* Cor do botão ao passar o mouse */
+                    }
+                  </style>
+                  
+                  <button class="btn btn-custom my-2 my-sm-0" type="submit">
+                    <i class="fas fa-search"></i>
+                  </button>
+                          </form>
+    </div>
+</nav> {% endcomment %}
+
+<body class="goto-here">
+    <div class="py-1 bg-black">
+    <div class="container">
+        <div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
+            <div class="col-lg-12 d-block">
+                <div class="row d-flex">
+                    <div class="col-md pr-4 d-flex topper align-items-center">
+                        <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
+                        <span class="text">+ 1235 2355 98</span>
+                    </div>
+                    <div class="col-md pr-4 d-flex topper align-items-center">
+                        <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
+                        <span class="text">youremail@email.com</span>
+                    </div>
+                    <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
+                        <span class="text">3-5 Business days delivery &amp; Free Returns</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'produto:lista' %}">Winkel</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="oi oi-menu"></span> Menu
+      </button>
+
+      <div class="collapse navbar-collapse" id="ftco-nav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a href="{% url 'produto:lista' %}" class="nav-link">Home</a></li>
+          <li class="nav-item dropdown active">
+          <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown04">
+              <a class="dropdown-item" href="{% url 'produto:lista' %}">Shop</a>
+            <a class="dropdown-item" href="{% url 'produto:lista' %}">Single Product</a>
+            <a class="dropdown-item" href="{% url 'produto:lista' %}">Cart</a>
+            <a class="dropdown-item" href="{% url 'produto:lista' %}">Checkout</a>
+          </div>
+        </li>
+          <li class="nav-item"><a href="{% url 'produto:lista' %}" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="{% url 'produto:lista' %}" class="nav-link">Blog</a></li>
+          <li class="nav-item"><a href="{% url 'produto:lista' %}" class="nav-link">Contact</a></li>
+          <li class="nav-item cta cta-colored"><a href="{% url 'produto:carrinho' %}" class="nav-link"><span class="icon-shopping_cart"></span>[{{ request.session.carrinho|cart_total_qtd }}x]</a></li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>

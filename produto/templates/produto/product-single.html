@@ -1,0 +1,446 @@
+{% load static %}
+{% load omfilters %}
+
+<html lang="en">
+  <head>
+    <title>Winkel - Free Bootstrap 4 Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+		
+		<link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
+		<link rel="stylesheet" href="{% static 'css/animate.css' %}">
+		
+		<link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+		<link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+		<link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+		
+		<link rel="stylesheet" href="{% static 'css/aos.css' %}">
+		
+		<link rel="stylesheet" href="{% static 'css/ionicons.min.css' %}">
+		
+		<link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.css' %}">
+		<link rel="stylesheet" href="{% static 'css/jquery.timepicker.css' %}">
+		
+		<link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+		<link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+		
+  </head>
+  <body class="goto-here">
+		<div class="py-1 bg-black">
+    	<div class="container">
+    		<div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
+	    		<div class="col-lg-12 d-block">
+		    		<div class="row d-flex">
+		    			<div class="col-md pr-4 d-flex topper align-items-center">
+					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
+						    <span class="text">+ 1235 2355 98</span>
+					    </div>
+					    <div class="col-md pr-4 d-flex topper align-items-center">
+					    	<div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
+						    <span class="text">youremail@email.com</span>
+					    </div>
+					    <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
+						    <span class="text">3-5 Business days delivery &amp; Free Returns</span>
+					    </div>
+				    </div>
+			    </div>
+		    </div>
+		  </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	      <a class="navbar-brand" href="index.html">Winkel</a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+	          <li class="nav-item dropdown active">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown04">
+              	<a class="dropdown-item" href="shop.html">Shop</a>
+                <a class="dropdown-item" href="product-single.html">Single Product</a>
+                <a class="dropdown-item" href="cart.html">Cart</a>
+                <a class="dropdown-item" href="checkout.html">Checkout</a>
+              </div>
+            </li>
+	          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+	          <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+{% comment %} 
+    <div class="hero-wrap hero-bread" style="background-image: url('images/bg_6.jpg');">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span class="mr-2"><a href="index.html">Product</a></span> <span>Product Single</span></p>
+            <h1 class="mb-0 bread">Product Single</h1>
+          </div>
+        </div>
+      </div>
+    </div> {% endcomment %}
+{% if messages %}
+    <div id="message-container">
+        {% for message in messages %}
+            <div class="alert alert-success message-float">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    <style>
+        .message-float {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #28a745; /* Cor que você gosta */
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeOut 5s ease-in-out forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+{% endif %}
+
+
+		<section class="ftco-section">
+			<div class="container">
+					<div class="row">
+							<div class="col-lg-6 mb-5 ftco-animate">
+									{% if produto.imagem %}
+									<a href="{{ produto.imagem.url }}" class="image-popup">
+											<img src="{{ produto.imagem.url }}" class="img-fluid" alt="{{ produto.nome }}">
+											{% if produto.preco_marketing_promocional %}
+											<div class="badge badge-danger position-absolute" style="top: 10px; left: 10px; font-size: 1.2rem;">Promoção</div>
+											{% endif %}
+									</a>
+									{% endif %}
+							</div>
+							<div class="col-lg-6 product-details pl-md-5 ftco-animate">
+									<h3>{{ produto.nome }}</h3>
+									<div class="rating d-flex">
+											<p class="text-left mr-4">
+													<a href="#" class="mr-2">5.0</a>
+													<a href="#"><span class="ion-ios-star-outline"></span></a>
+													<a href="#"><span class="ion-ios-star-outline"></span></a>
+													<a href="#"><span class="ion-ios-star-outline"></span></a>
+													<a href="#"><span class="ion-ios-star-outline"></span></a>
+													<a href="#"><span class="ion-ios-star-outline"></span></a>
+											</p>
+											<p class="text-left mr-4">
+													<a href="#" class="mr-2" style="color: #000;">100 <span style="color: #bbb;">Rating</span></a>
+											</p>
+											<p class="text-left">
+													<a href="#" class="mr-2" style="color: #000;">500 <span style="color: #bbb;">Sold</span></a>
+											</p>
+									</div>
+									<p class="price">
+											{% if produto.preco_marketing_promocional %}
+											<span class="text-success" style="font-size: 2rem; font-weight: bold;">
+													{{ produto.preco_marketing_promocional|formata_preco }}
+											</span>
+											<span class="text-muted" style="text-decoration: line-through; font-size: 1.5rem;">
+													{{ produto.preco_marketing|formata_preco }}
+											</span>
+											{% else %}
+											<span class="text-success" style="font-size: 2rem; font-weight: bold;">
+													{{ produto.preco_marketing|formata_preco }}
+											</span>
+											{% endif %}
+									</p>
+									{% comment %} <p>{{ produto.descricao_curta }}</p> {% endcomment %}
+									<p>{{ produto.descricao_longa|linebreaks }}</p>
+	
+									<form action="{% url 'produto:adicionaraocarrinho' %}" id="form-add-to-cart">
+											<div class="form-group">
+													<select id="select-variacoes" name="vid" class="form-control form-control-lg">
+															{% for variacao in produto.variacao_set.all %}
+															{% if variacao.preco_promocional %}
+															<option data-preco="{{ variacao.preco|formata_preco }}"
+																	data-preco-promocional="{{ variacao.preco_promocional|formata_preco }}"
+																	value="{{ variacao.id }}">
+																	{% if variacao.nome %}
+																	{{ variacao.nome }}
+																	{% else %}
+																	{{ variacao }}
+																	{% endif %}
+															</option>
+															{% else %}
+															<option data-preco="{{ variacao.preco|formata_preco }}" value="{{ variacao.id }}">
+																	{% if variacao.nome %}
+																	{{ variacao.nome }}
+																	{% else %}
+																	{{ variacao }}
+																	{% endif %}
+															</option>
+															{% endif %}
+															{% endfor %}
+													</select>
+											</div>
+	
+											<div class="row mt-4">
+												<div class="w-100"></div>
+												<div class="quantity-selector mb-3">
+														<label class="d-block mb-2">Quantidade</label>
+														<div class="quantity-controls d-flex align-items-center">
+																<button type="button" class="qty-btn minus btn btn-outline-secondary" onclick="updateQuantity(-1)">-</button>
+																<input type="number" id="quantidade" name="quantidade" value="1" min="1" max="10" class="form-control mx-2 text-center" onchange="validateQuantity()">
+																<button type="button" class="qty-btn plus btn btn-outline-secondary" onclick="updateQuantity(1)">+</button>
+														</div>
+												</div>
+												<div class="w-100"></div>
+												<div class="col-md-12 mb-4">
+														<p style="color: #000;">Descrição do produto: [Colocar Informaticaos necessarias ]</p>
+												</div>
+										</div>
+										<input type="hidden" name="produto_id" value="{{ produto.id }}">
+										<div class="text-center">
+												<a href="javascript:void(0)" onclick="this.closest('form').submit();" class="btn btn-black py-3 px-5 btn-lg">
+														<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+														Adicionar ao carrinho
+												</a>
+										</div>
+										</form>
+									</form>
+							</div>
+					</div>
+			</div>
+	</section>
+	
+	<section class="ftco-section bg-light">
+    <div class="container">
+        <div class="row justify-content-center mb-3 pb-3">
+            <div class="col-md-12 heading-section text-center ftco-animate">
+                <h2 class="mb-4">Produtos Relacionados</h2>
+                <p>Confira outros produtos que podem te interessar.</p>
+            </div>
+        </div>
+        <div class="row">
+            {% for produto_relacionado in produtos_relacionados %}
+            <div class="col-sm-6 col-md-4 col-lg-3 ftco-animate">
+                <div class="product">
+                    <a href="{{ produto_relacionado.get_absolute_url }}" class="img-prod">
+                        <img class="img-fluid" src="{{ produto_relacionado.imagem.url }}" alt="{{ produto_relacionado.nome }}">
+                        {% if produto_relacionado.preco_marketing_promocional %}
+                        <span class="status">Promoção</span>
+                        {% endif %}
+                        <div class="overlay"></div>
+                    </a>
+                    <div class="text py-3 px-3">
+                        <h3><a href="{{ produto_relacionado.get_absolute_url }}">{{ produto_relacionado.nome }}</a></h3>
+                        <div class="d-flex">
+                            <div class="pricing">
+                                <p class="price">
+                                    {% if produto_relacionado.preco_marketing_promocional %}
+                                    <span class="mr-2 price-dc">{{ produto_relacionado.preco_marketing|formata_preco }}</span>
+                                    <span class="price-sale">{{ produto_relacionado.preco_marketing_promocional|formata_preco }}</span>
+                                    {% else %}
+                                    <span>{{ produto_relacionado.preco_marketing|formata_preco }}</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="rating">
+                                <p class="text-right">
+                                    <a href="#"><span class="ion-ios-star-outline"></span></a>
+                                    <a href="#"><span class="ion-ios-star-outline"></span></a>
+                                    <a href="#"><span class="ion-ios-star-outline"></span></a>
+                                    <a href="#"><span class="ion-ios-star-outline"></span></a>
+                                    <a href="#"><span class="ion-ios-star-outline"></span></a>
+                                </p>
+                            </div>
+                        </div>
+                        <p class="bottom-area d-flex px-3">
+                            <a href="" class="add-to-cart text-center py-2 mr-1"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+                            <a href="#" class="buy-now text-center py-2">Buy now<span><i class="ion-ios-cart ml-1"></i></span></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+    <footer class="ftco-footer bg-light ftco-section">
+      <div class="container">
+      	<div class="row">
+      		<div class="mouse">
+						<a href="#" class="mouse-icon">
+							<div class="mouse-wheel"><span class="ion-ios-arrow-up"></span></div>
+						</a>
+					</div>
+      	</div>
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Winkel</h2>
+              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
+              <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-5">
+              <h2 class="ftco-heading-2">Menu</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="py-2 d-block">Shop</a></li>
+                <li><a href="#" class="py-2 d-block">About</a></li>
+                <li><a href="#" class="py-2 d-block">Journal</a></li>
+                <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Help</h2>
+              <div class="d-flex">
+	              <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
+	                <li><a href="#" class="py-2 d-block">Shipping Information</a></li>
+	                <li><a href="#" class="py-2 d-block">Returns &amp; Exchange</a></li>
+	                <li><a href="#" class="py-2 d-block">Terms &amp; Conditions</a></li>
+	                <li><a href="#" class="py-2 d-block">Privacy Policy</a></li>
+	              </ul>
+	              <ul class="list-unstyled">
+	                <li><a href="#" class="py-2 d-block">FAQs</a></li>
+	                <li><a href="#" class="py-2 d-block">Contact</a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@yourdomain.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+						  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+  
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+	<script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
+	<script src="{% static 'js/popper.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+	<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+	<script src="{% static 'js/jquery.stellar.min.js' %}"></script>
+	<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+	<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+	<script src="{% static 'js/aos.js' %}"></script>
+	<script src="{% static 'js/jquery.animateNumber.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+	<script src="{% static 'js/scrollax.min.js' %}"></script>
+	
+	<!-- Google Maps -->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+	<script src="{% static 'js/google-map.js' %}"></script>
+	
+	<script src="{% static 'js/main.js' %}"></script>
+	
+
+	<script>
+		function updateQuantity(change) {
+				let quantityInput = document.getElementById('quantidade');
+				let currentQuantity = parseInt(quantityInput.value);
+
+				// Atualiza a quantidade, garantindo que não ultrapasse os limites (mínimo 1, máximo 10)
+				let newQuantity = currentQuantity + change;
+
+				if (newQuantity >= 1 && newQuantity <= 10) {
+						quantityInput.value = newQuantity;
+				}
+		}
+
+		function validateQuantity() {
+				let quantityInput = document.getElementById('quantidade');
+				let currentQuantity = parseInt(quantityInput.value);
+
+				// Garante que a quantidade esteja entre os valores válidos (1 a 10)
+				if (currentQuantity < 1) {
+						quantityInput.value = 1;
+				} else if (currentQuantity > 10) {
+						quantityInput.value = 10;
+				}
+		}
+</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const variationSelect = document.getElementById('select-variacoes');
+			const priceElement = document.querySelector('.price');
+	
+			variationSelect.addEventListener('change', function() {
+					const selectedOption = this.options[this.selectedIndex];
+					
+					// Check if promotional price exists
+					const promoPrice = selectedOption.getAttribute('data-preco-promocional');
+					const regularPrice = selectedOption.getAttribute('data-preco');
+	
+					// Clear existing price elements
+					priceElement.innerHTML = '';
+	
+					if (promoPrice) {
+							// Create promotional price structure
+							priceElement.innerHTML = `
+									<span class="text-success" style="font-size: 2rem; font-weight: bold;">
+											${promoPrice}
+									</span>
+									<span class="text-muted" style="text-decoration: line-through; font-size: 1.5rem;">
+											${regularPrice}
+									</span>
+							`;
+					} else {
+							// Create regular price structure
+							priceElement.innerHTML = `
+									<span class="text-success" style="font-size: 2rem; font-weight: bold;">
+											${regularPrice}
+									</span>
+							`;
+					}
+			});
+	});
+</script>
+    
+  </body>
+</html>
