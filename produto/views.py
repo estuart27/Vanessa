@@ -10,6 +10,11 @@ from perfil.models import Perfil
 from .models import Category
 
 
+def contact(request):
+    return render(request, 'produto/contatc.html')
+
+def cart(request):
+    return render(request, 'produto/cart.html')
 
 class ListaProdutos(ListView):
     model = models.Produto
