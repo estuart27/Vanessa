@@ -16,4 +16,6 @@ urlpatterns = [
     path('busca/', views.Busca.as_view(), name="busca"),
     path('cart/', views.cart, name="cart"),
     path('contact/', views.contact, name="contact"),
+     path('blog/', views.ListaPostagensView.as_view(), name='blog'),
+    path('post/<slug:slug>/', views.DetalhesPostagemView.as_view(), name='detalhes_post'),
 ]

@@ -8,6 +8,45 @@ from django.db.models import Q
 from . import models
 from perfil.models import Perfil
 from .models import Category
+from django.views.generic import ListView, DetailView
+from django.shortcuts import render
+from .models import Postagem, Category
+from django.db.models import Count
+
+#   CODIGO A SEER UTILIZADO
+# def blog(request):
+#     return render(request, 'produto/blog.html')
+
+
+class ListaPostagensView(ListView):
+    model = Postagem
+    template_name = 'produto/blog.html'
+    context_object_name = 'postagens'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        contexto = super().get_context_data(**kwargs)
+        contexto['categorias'] = Category.objects.annotate(
+            contagem_posts=Count('postagem')
+        )
+        contexto['posts_recentes'] = Postagem.objects.order_by('-data_criacao')[:3]
+        return contexto
+
+class DetalhesPostagemView(DetailView):
+    model = Postagem
+    template_name = 'produto/blog-single.html'
+    context_object_name = 'postagem'
+
+    def get_context_data(self, **kwargs):
+        contexto = super().get_context_data(**kwargs)
+        contexto['posts_recentes'] = Postagem.objects.exclude(
+            id=self.object.id
+        ).order_by('-data_criacao')[:3]
+        contexto['categorias'] = Category.objects.annotate(
+            contagem_posts=Count('postagem')
+        )
+        return contexto
+
 
 
 def contact(request):

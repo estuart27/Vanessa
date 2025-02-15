@@ -1,0 +1,182 @@
+{% load static %}
+{% load omfilters %}
+
+<html lang="en">
+  <head>
+    <title>Winkel - Free Bootstrap 4 Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+		
+		<link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
+		<link rel="stylesheet" href="{% static 'css/animate.css' %}">
+		
+		<link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+		<link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+		<link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+		
+		<link rel="stylesheet" href="{% static 'css/aos.css' %}">
+		
+		<link rel="stylesheet" href="{% static 'css/ionicons.min.css' %}">
+		
+		<link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.css' %}">
+		<link rel="stylesheet" href="{% static 'css/jquery.timepicker.css' %}">
+		
+		<link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+		<link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+		
+  </head>
+	{% include 'parciais/_nav.html' %}
+  
+  {% comment %} Pagina blog.html {% endcomment %}
+  {% block content %}
+  <div class="hero-wrap hero-bread" style="background-image: url('{% static 'images/bg_6.jpg' %}');">
+      <div class="container">
+          <div class="row no-gutters slider-text align-items-center justify-content-center">
+              <div class="col-md-9 ftco-animate text-center">
+                  <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'produto:cart' %}">Home</a></span> <span>Blog</span></p>
+                  <h1 class="mb-0 bread">Blog</h1>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <section class="ftco-section ftco-degree-bg">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-8 ftco-animate">
+                  <div class="row">
+                      {% for postagem in postagens %}
+                      <div class="col-md-12 d-flex ftco-animate">
+                          <div class="blog-entry align-self-stretch d-md-flex">
+                              <a href="{% url 'produto:detalhes_post' postagem.slug %}" class="block-20" 
+                                 style="background-image: url('{{ postagem.imagem_destaque.url }}');">
+                              </a>
+                              <div class="text d-block pl-md-4">
+                                  <div class="meta mb-3">
+                                      <div><a href="#">{{ postagem.data_criacao|date:"d/m/Y" }}</a></div>
+                                      <div><a href="#">{{ postagem.autor.username }}</a></div>
+                                      <div><a href="#" class="meta-chat"><span class="icon-chat"></span> {{ postagem.quantidade_comentarios }}</a></div>
+                                  </div>
+                                  <h3 class="heading"><a href="{% url 'produto:detalhes_post' postagem.slug %}">{{ postagem.titulo }}</a></h3>
+                                  <p>{{ postagem.conteudo|truncatewords:30 }}</p>
+                                  <p><a href="{% url 'produto:detalhes_post' postagem.slug %}" class="btn btn-primary py-2 px-3">Leia mais</a></p>
+                              </div>
+                          </div>
+                      </div>
+                      {% endfor %}
+                  </div>
+                  
+                  {% if is_paginated %}
+                  <div class="row mt-5">
+                      <div class="col text-center">
+                          <div class="block-27">
+                              <ul>
+                                  {% if page_obj.has_previous %}
+                                  <li><a href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+                                  {% endif %}
+                                  
+                                  {% for num in page_obj.paginator.page_range %}
+                                      {% if page_obj.number == num %}
+                                      <li class="active"><span>{{ num }}</span></li>
+                                      {% else %}
+                                      <li><a href="?page={{ num }}">{{ num }}</a></li>
+                                      {% endif %}
+                                  {% endfor %}
+                                  
+                                  {% if page_obj.has_next %}
+                                  <li><a href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+                                  {% endif %}
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  {% endif %}
+              </div>
+  
+              <div class="col-lg-4 sidebar ftco-animate">
+                  <div class="sidebar-box">
+                      <form action="{% url 'produto:blog' %}" method="get" class="search-form">
+                          <div class="form-group">
+                              <span class="icon ion-ios-search"></span>
+                              <input type="text" name="q" class="form-control" placeholder="Digite uma palavra-chave e pressione enter">
+                          </div>
+                      </form>
+                  </div>
+                  
+                  <div class="sidebar-box ftco-animate">
+                      <h3 class="heading">Categorias</h3>
+                      <ul class="categories">
+                          {% for categoria in categorias %}
+                          <li><a href="?categoria={{ categoria.name }}">{{ categoria.name }} <span>({{ categoria.contagem_posts }})</span></a></li>
+                          {% endfor %}
+                      </ul>
+                  </div>
+  
+                  <div class="sidebar-box ftco-animate">
+                      <h3 class="heading">Posts Recentes</h3>
+                      {% for post in posts_recentes %}
+                      <div class="block-21 mb-4 d-flex">
+                          <a class="blog-img mr-4" style="background-image: url({{ post.imagem_destaque.url }});"></a>
+                          <div class="text">
+                              <h3 class="heading-1"><a href="{% url 'produto:detalhes_post' post.slug %}">{{ post.titulo }}</a></h3>
+                              <div class="meta">
+                                  <div><a href="#"><span class="icon-calendar"></span> {{ post.data_criacao|date:"d/m/Y" }}</a></div>
+                                  <div><a href="#"><span class="icon-person"></span> {{ post.autor.username }}</a></div>
+                                  <div><a href="#"><span class="icon-chat"></span> {{ post.quantidade_comentarios }}</a></div>
+                              </div>
+                          </div>
+                      </div>
+                      {% endfor %}
+                  </div>
+  
+                  <div class="sidebar-box ftco-animate">
+                      <h3 class="heading">Tags</h3>
+                      <div class="tagcloud">
+                          <a href="#" class="tag-cloud-link">loja</a>
+                          <a href="#" class="tag-cloud-link">produtos</a>
+                          <a href="#" class="tag-cloud-link">camiseta</a>
+                          <a href="#" class="tag-cloud-link">calça</a>
+                          <a href="#" class="tag-cloud-link">sapatos</a>
+                          <a href="#" class="tag-cloud-link">vestido</a>
+                          <a href="#" class="tag-cloud-link">casacos</a>
+                          <a href="#" class="tag-cloud-link">macacão</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+  {% endblock %}
+
+    {% include 'parciais/_footer.html' %}
+
+    
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+  
+  
+  
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.stellar.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/aos.js' %}"></script>
+    <script src="{% static 'js/jquery.animateNumber.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'js/scrollax.min.js' %}"></script>
+    
+    <!-- Google Maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+    <script src="{% static 'js/google-map.js' %}"></script>
+    
+    <script src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>

@@ -2,83 +2,6 @@
 {% load omfilters %}
 
 
-{% comment %} 
- <!-- Navbar existente -->
-<nav class="navbar navbar-light bg-white navbar-expand-lg shadow-sm">
-    <a class="navbar-brand" href="{% url 'produto:lista' %}">
-        <img src="{% static 'img/Logo.png' %}" alt="EstiloPronto" style="height: 80px; width: 350px;">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
-            {% if request.user.is_authenticated %}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    Conta
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item text-dark" href="{% url 'pedido:lista' %}">Meus pedidos</a>
-                    <a class="dropdown-item text-dark" href="{% url 'perfil:criar' %}">Atualizar meus dados</a>
-                    <a class="dropdown-item text-dark" href="{% url 'perfil:logout' %}">Sair</a>
-                </div>
-            </li>
-            {% else %}
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="{% url 'perfil:criar' %}">Entrar</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="{% url 'perfil:criar' %}">Criar conta</a>
-            </li>
-            {% endif %}
-
-            {% if request.session.carrinho %}
-            <li class="nav-item">
-                <a class="nav-link nav-cart-link active text-dark" href="{% url 'produto:carrinho' %}">
-                    <span class="nav-cart-text mr-1">
-                        Carrinho
-                    </span>
-                    <span class="nav-cart-count mr-1">
-                        <strong>{{ request.session.carrinho|cart_total_qtd }}x</strong>
-                    </span>
-                    <span class="nav-cart-icon mr-2">
-                        <i class="fas fa-shopping-cart"></i>
-                    </span>
-                </a>
-            </li>
-            {% endif %}
-        </ul>
-        <form class="form-inline my-2 my-lg-0" method="GET" action="{% url 'produto:busca' %}">
-            <input name="termo" value="{{ request.GET.termo }}" class="form-control mr-sm-2" type="search"
-                placeholder="Busca" aria-label="Busca">
-                <style>
-                    .btn-custom {
-                      background-color: #007bff; /* Azul personalizado */
-                      border: none; /* Remove a borda padrão */
-                      color: white; /* Cor do texto */
-                      font-weight: bold; /* Texto em negrito */
-                      font-size: 1.1rem; /* Tamanho da fonte */
-                      display: flex; /* Flexbox para alinhar o ícone centralizado */
-                      align-items: center; /* Alinha o ícone verticalmente */
-                      justify-content: center; /* Alinha o ícone horizontalmente */
-                    }
-                  
-                    .btn-custom:hover {
-                      background-color: #0056b3; /* Cor do botão ao passar o mouse */
-                    }
-                  </style>
-                  
-                  <button class="btn btn-custom my-2 my-sm-0" type="submit">
-                    <i class="fas fa-search"></i>
-                  </button>
-                          </form>
-    </div>
-</nav>  {% endcomment %}
-
 <body class="goto-here">
     <div class="py-1 bg-black">
     <div class="container">
@@ -112,7 +35,7 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item"><a href="{% url 'produto:lista' %}" class="nav-link">Home</a></li>
           <li class="nav-item"><a href="{% url 'produto:lista' %}" class="nav-link">About</a></li>
-          <li class="nav-item"><a href="{% url 'produto:lista' %}" class="nav-link">Blog</a></li>
+          <li class="nav-item"><a href="{% url 'produto:blog' %}" class="nav-link">Blog</a></li>
           {% if request.user.is_authenticated %}
           <li class="nav-item dropdown active">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mais</a>

@@ -85,3 +85,20 @@ class VariacaoObrigatoria(BaseInlineFormSet):
 
 
 
+from django import forms
+from .models import Comentario
+
+class FormularioComentario(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['conteudo']
+        widgets = {
+            'conteudo': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Digite seu comentário aqui...'
+            }),
+        }
+        labels = {
+            'conteudo': 'Comentário'
+        }

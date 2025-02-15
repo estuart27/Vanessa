@@ -53,6 +53,23 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = 'name',
     ordering = '-id',
 
+from django.contrib import admin
+from .models import Postagem, Comentario
+
+@admin.register(Postagem)
+class PostagemAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'autor', 'categoria', 'data_criacao', 'quantidade_comentarios')
+    list_filter = ('categoria', 'data_criacao', 'autor')
+    search_fields = ('titulo', 'conteudo')
+    prepopulated_fields = {'slug': ('titulo',)}
+    date_hierarchy = 'data_criacao'
+
+@admin.register(Comentario)
+class ComentarioAdmin(admin.ModelAdmin):
+    list_display = ('autor', 'postagem', 'data_criacao')
+    list_filter = ('data_criacao', 'autor')
+    search_fields = ('conteudo', 'autor__username', 'postagem__titulo')
+
 admin.site.register(models.Produto, ProdutoAdmin)
 admin.site.register(models.Variacao)
 admin.site.register(models.Category)
