@@ -14,8 +14,11 @@ from .models import Postagem, Category
 from django.db.models import Count
 
 #   CODIGO A SEER UTILIZADO
-# def blog(request):
-#     return render(request, 'produto/blog.html')
+def blog(request):
+    return render(request, 'produto/blog.html')
+
+def blog(request):
+    return render(request, 'produto/blog.html')
 
 
 class ListaPostagensView(ListView):
