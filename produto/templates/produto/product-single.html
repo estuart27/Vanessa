@@ -30,17 +30,21 @@
   </head>
 	{% include 'parciais/_nav.html' %}
     <!-- END nav -->
-{% comment %} 
-    <div class="hero-wrap hero-bread" style="background-image: url('images/bg_6.jpg');">
-      <div class="container">
-        <div class="row no-gutters slider-text align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span class="mr-2"><a href="index.html">Product</a></span> <span>Product Single</span></p>
-            <h1 class="mb-0 bread">Product Single</h1>
-          </div>
-        </div>
-      </div>
-    </div> {% endcomment %}
+	<div class="hero-wrap hero-bread" style="background-image: url('{% static 'images/Logo.png' %}');">
+		<div class="container">
+			<div class="row no-gutters slider-text align-items-center justify-content-center">
+				<div class="col-md-9 ftco-animate text-center">
+					<p class="breadcrumbs" style="color: white;">
+						<span class="mr-2"><a href="{% url 'produto:index' %}" style="color: white;">Home</a></span> 
+						<span style="color: white;">Blog</span>
+					</p>
+					<h1 class="mb-0 bread" style="color: white;">Blog</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
 {% if messages %}
     <div id="message-container">
         {% for message in messages %}
@@ -70,21 +74,22 @@
     </style>
 {% endif %}
 
-
-		<section class="ftco-section">
-			<div class="container">
-					<div class="row">
-							<div class="col-lg-6 mb-5 ftco-animate">
-									{% if produto.imagem %}
-									<a href="{{ produto.imagem.url }}" class="image-popup">
-											<img src="{{ produto.imagem.url }}" class="img-fluid" alt="{{ produto.nome }}">
-											{% if produto.preco_marketing_promocional %}
-											<div class="badge badge-danger position-absolute" style="top: 10px; left: 10px; font-size: 1.2rem;">Promoção</div>
-											{% endif %}
-									</a>
-									{% endif %}
-							</div>
-							<div class="col-lg-6 product-details pl-md-5 ftco-animate">
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-5 ftco-animate">
+                {% if produto.imagem %}
+                <a href="{{ produto.imagem.url }}" class="image-popup">
+                    <img src="{{ produto.imagem.url }}" class="img-fluid" alt="{{ produto.nome }}" style="width: 510px; height: 765px; object-fit: cover;">
+					{% if produto.preco_marketing_promocional %}
+					<div class="badge position-absolute" style="top: 10px; left: 10px; font-size: 1.2rem; background-color: #FFA45C; color: black; padding: 5px 10px; border-radius: 5px; box-shadow: none; font-weight: normal;">
+						{{ desconto }}% OFF
+					</div>
+				{% endif %}
+                </a>
+                {% endif %}
+            </div>
+            <div class="col-lg-6 product-details pl-md-5 ftco-animate">
 									<h3>{{ produto.nome }}</h3>
 									<div class="rating d-flex">
 											<p class="text-left mr-4">
@@ -104,7 +109,7 @@
 									</div>
 									<p class="price">
 											{% if produto.preco_marketing_promocional %}
-											<span class="text-success" style="font-size: 2rem; font-weight: bold;">
+											<span class="text-success">
 													{{ produto.preco_marketing_promocional|formata_preco }}
 											</span>
 											<span class="text-muted" style="text-decoration: line-through; font-size: 1.5rem;">

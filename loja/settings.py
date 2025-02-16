@@ -103,7 +103,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # Modifique para "staticfiles" para evitar confusão
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Modifique para "staticfiles" para evitar confusão
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'templates/static'),  # Certifique-se de que este caminho existe e contém seus arquivos estáticos
@@ -131,3 +131,8 @@ SESSION_SAVE_EVERY_REQUEST = False
 # SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MERCADO_PAGO_ACCESS_TOKEN = "TEST-1363675576556254-021312-efbb0c786d4754ab6cebacb5aeb42be4-1218814315"
+
+# Configuração do ambiente (True para sandbox/teste, False para produção)
+MERCADO_PAGO_SANDBOX = True

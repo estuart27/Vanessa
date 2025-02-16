@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-from django.views import View
-from django.http import HttpResponse
+from django.views.generic import ListView, DetailView, View
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
+<<<<<<< HEAD
 from django.db.models import Q
 from . import models
 from perfil.models import Perfil
@@ -50,24 +49,211 @@ class DetalhesPostagemView(DetailView):
         )
         return contexto
 
+=======
+from django.db.models import Q, Count
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+>>>>>>> 1cff239 (Primeiro Comiit)
 
+import mercadopago
+import json
+
+from . import models
+from .models import Produto, Category, Postagem
+from perfil.models import Perfil
+from .forms import ContatoForm,FormularioComentario
+
+
+
+from django.shortcuts import render
+from .models import Produto, Category
+
+from django.shortcuts import render
+from .models import Produto, Category
+
+def index(request):
+    # Obtém todos os produtos
+    queryset = Produto.objects.all()
+
+    # Filtra por categoria e subcategoria, se houver na requisição
+    category_id = request.GET.get('category')
+    subcategory_id = request.GET.get('subcategory')
+
+    if category_id:
+        queryset = queryset.filter(category_id=category_id)
+
+    if subcategory_id:
+        queryset = queryset.filter(subcategory_id=subcategory_id)
+
+    # Obtém todas as categorias
+    categories = Category.objects.prefetch_related('subcategories').all()
+
+    # Calcula o desconto para cada produto
+    produtos_com_desconto = []
+    for produto in queryset:
+        if produto.preco_marketing_promocional:
+            desconto = ((produto.preco_marketing - produto.preco_marketing_promocional) / produto.preco_marketing) * 100
+            desconto = int(round(desconto, 0))
+        else:
+            desconto = 0
+
+        produtos_com_desconto.append({
+            'produto': produto,
+            'desconto': desconto,
+        })
+
+    # Passa os dados para o template
+    context = {
+        'produtos': queryset,
+        'categories': categories,
+        'selected_category': category_id,
+        'selected_subcategory': subcategory_id,
+        'produtos_com_desconto': produtos_com_desconto,
+    }
+
+    return render(request, 'produto/index.html', context)
+
+
+
+def troca(request):
+    return render(
+        request,
+        'produto/Troca.html',
+    )
+
+def termos(request):
+    return render(
+        request,
+        'produto/Termos.html',
+    )
+
+def politica(request):
+    return render(
+        request,
+        'produto/Politica.html',
+    )
+
+
+
+def checkout(request):
+    return render(
+        request,
+        'produto/checkout.html',
+    )
+
+
+def about(request):
+    return render(
+        request,
+        'produto/about.html',
+    )
 
 def contact(request):
-    return render(request, 'produto/contatc.html')
+    if request.method == 'POST':
+        form = ContatoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Mensagem enviada com sucesso!')
+            return redirect('produto:contact')
+    else:
+        form = ContatoForm()
+    return render(request, 'produto/contact.html',{'form': form})  # Corrigindo o nome do arquivo
 
-def cart(request):
-    return render(request, 'produto/cart.html')
+
+class ListaPostagensView(ListView):
+    model = Postagem
+    template_name = 'produto/blog.html'
+    context_object_name = 'postagens'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        contexto = super().get_context_data(**kwargs)
+        contexto['categorias'] = Category.objects.annotate(
+            contagem_posts=Count('postagem')
+        )
+        contexto['posts_recentes'] = Postagem.objects.order_by('-data_criacao')[:3]
+        return contexto
+
+class DetalhesPostagemView(DetailView):
+    model = Postagem
+    template_name = 'produto/blog-single.html'
+    context_object_name = 'postagem'
+
+    def get_context_data(self, **kwargs):
+        contexto = super().get_context_data(**kwargs)
+        contexto['posts_recentes'] = Postagem.objects.exclude(
+            id=self.object.id
+        ).order_by('-data_criacao')[:3]
+        contexto['categorias'] = Category.objects.annotate(
+            contagem_posts=Count('postagem')
+        )
+        return contexto
+
+def adicionar_comentario(request, slug):
+    postagem = get_object_or_404(Postagem, slug=slug)
+
+    if request.method == "POST":
+        form = FormularioComentario(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.autor = request.user
+            comentario.postagem = postagem
+            comentario.save()
+            messages.success(request, "Comentário adicionado com sucesso!")
+            return redirect('produto:detalhes_post', slug=postagem.slug)
+    else:
+        form = FormularioComentario()
+
+    return redirect('produto:detalhes_post', slug=postagem.slug)
+
 
 class ListaProdutos(ListView):
-    model = models.Produto
-    template_name = 'produto/lista.html'
+    model = Produto
+    template_name = 'produto/shop.html'
     context_object_name = 'produtos'
-    paginate_by = 10
+    paginate_by = 17
     ordering = ['-id']
+
+    def get_queryset(self):
+        queryset = Produto.objects.all()
+
+        # Filtra por categoria, se houver
+        category_id = self.request.GET.get('category')
+        subcategory_id = self.request.GET.get('subcategory')
+
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
+        
+        if subcategory_id:
+            queryset = queryset.filter(subcategory_id=subcategory_id)
+
+        return queryset.order_by(*self.ordering)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
+
+        # Adiciona as categorias ao contexto
+        context['categories'] = Category.objects.prefetch_related('subcategories').all()
+
+        # Adiciona a categoria e subcategoria selecionadas ao contexto
+        context['selected_category'] = self.request.GET.get('category')
+        context['selected_subcategory'] = self.request.GET.get('subcategory')
+
+        # Calcula o desconto para cada produto
+        produtos_com_desconto = []
+        for produto in context['produtos']:
+            if produto.preco_marketing_promocional:
+                desconto = ((produto.preco_marketing - produto.preco_marketing_promocional) / produto.preco_marketing) * 100
+                desconto = int(round(desconto, 0))
+            else:
+                desconto = 0
+
+            produtos_com_desconto.append({
+                'produto': produto,
+                'desconto': desconto,
+            })
+
+        context['produtos_com_desconto'] = produtos_com_desconto
         return context
 
 
@@ -98,12 +284,23 @@ class DetalheProduto(DetailView):
     slug_url_kwarg = 'slug'
 
     def get_context_data(self, **kwargs):
+        # Obtém o contexto padrão da DetailView
         context = super().get_context_data(**kwargs)
         
         # Obtém o produto atual
         produto = self.get_object()
         
-        # Obtém os produtos relacionados (por exemplo, da mesma categoria)
+        # Calcula o desconto, se houver preço promocional
+        if produto.preco_marketing_promocional:
+            desconto = ((produto.preco_marketing - produto.preco_marketing_promocional) / produto.preco_marketing) * 100
+            desconto = int(round(desconto, 0))  # Arredonda e converte para inteiro
+        else:
+            desconto = 0
+        
+        # Adiciona o desconto ao contexto
+        context['desconto'] = desconto
+        
+        # Obtém os produtos relacionados (da mesma categoria)
         produtos_relacionados = models.Produto.objects.filter(category=produto.category).exclude(id=produto.id)[:4]
         
         # Adiciona os produtos relacionados ao contexto
@@ -111,7 +308,6 @@ class DetalheProduto(DetailView):
         
         return context
 
-    
 
 class AdicionarAoCarrinho(View):
     def get(self, *args, **kwargs):
@@ -192,7 +388,6 @@ class AdicionarAoCarrinho(View):
         return redirect(http_referer)
 
 
-
 class RemoverDoCarrinho(View):
     def get(self, *args, **kwargs):
         http_referer = self.request.META.get(
@@ -229,8 +424,7 @@ class Carrinho(View):
             'carrinho': self.request.session.get('carrinho', {})
         }
 
-        return render(self.request, 'produto/carrinho.html', contexto)
-
+        return render(self.request, 'produto/cart.html', contexto)
 
 
 class ResumoDaCompra(View):
@@ -260,3 +454,54 @@ class ResumoDaCompra(View):
         }
 
         return render(self.request, 'produto/resumodacompra.html', contexto)
+
+
+class GerarPagamentoMercadoPago(View):
+    def get(self, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            messages.error(
+                self.request,
+                'Você precisa fazer login.'
+            )
+            return redirect('perfil:criar')
+
+        if not self.request.session.get('carrinho'):
+            messages.error(
+                self.request,
+                'Carrinho vazio.'
+            )
+            return redirect('produto:lista')
+
+        carrinho = self.request.session.get('carrinho')
+        
+        # Inicializa o SDK do Mercado Pago
+        sdk = mercadopago.SDK(settings.MERCADO_PAGO_ACCESS_TOKEN)
+
+        # Prepara os itens do carrinho para o Mercado Pago
+        items = []
+        for item_id, item in carrinho.items():
+            items.append({
+                "id": item_id,
+                "title": item['produto_nome'],
+                "quantity": item['quantidade'],
+                "currency_id": "BRL",
+                "unit_price": float(item['preco_quantitativo'])
+            })
+
+        # Primeiro, redireciona para salvar o pedido
+        response = redirect('pedido:salvarpedido')
+        
+        # Armazena os dados do pagamento na sessão para uso posterior
+        self.request.session['payment_data'] = {
+            "items": items,
+            "back_urls": {
+                "success": "http://127.0.0.1:8000/",
+                "failure": "http://127.0.0.1:8000/produto/resumodacompra/",
+                "pending": "http://127.0.0.1:8000/produto/resumodacompra/"
+            },
+            "auto_return": "approved",
+            "binary_mode": True,
+            "statement_descriptor": "Sua Loja"
+        }
+        
+        return response

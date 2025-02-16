@@ -1,12 +1,9 @@
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView
 from django.views import View
-from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 import copy
-
 from . import models
 from . import forms
 
@@ -136,13 +133,12 @@ class Criar(BasePerfil):
         )
 
         return redirect('produto:carrinho')
-        return self.renderizar
 
 
 class Atualizar(View):
     def get(self, *args, **kwargs):
-        return HttpResponse('Atualizar')
-
+        if self.request.user.is_authenticated:
+            self.template_name = 'perfil/atualizar.html'
 
 class Login(View):
     def post(self, *args, **kwargs):

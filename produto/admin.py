@@ -6,8 +6,7 @@ from .forms import VariacaoObrigatoria
 from . import models
 from django.utils.html import format_html
 from django.contrib import admin
-from .models import Produto
-from .forms import ProdutoForm
+from .models import Produto,Category,SubCategory,Contato
 
 
 class VariacaoInline(admin.TabularInline):
@@ -19,7 +18,7 @@ class VariacaoInline(admin.TabularInline):
 
 
 class ProdutoAdmin(admin.ModelAdmin):
-    form = ProdutoForm
+    # form = ProdutoForm
     list_display = [
         'nome', 
         'descricao_curta', 
@@ -49,9 +48,30 @@ class ProdutoAdmin(admin.ModelAdmin):
 
 
 
+class SubCategoryInline(admin.TabularInline):
+    model = SubCategory
+    extra = 1  # Permite adicionar várias subcategorias direto na categoria
+
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = 'name',
-    ordering = '-id',
+    inlines = [SubCategoryInline]
+
+
+from django.contrib import admin
+from .models import Postagem, Comentario
+
+@admin.register(Postagem)
+class PostagemAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'autor', 'categoria', 'data_criacao', 'quantidade_comentarios')
+    list_filter = ('categoria', 'data_criacao', 'autor')
+    search_fields = ('titulo', 'conteudo')
+    prepopulated_fields = {'slug': ('titulo',)}
+    date_hierarchy = 'data_criacao'
+
+@admin.register(Comentario)
+class ComentarioAdmin(admin.ModelAdmin):
+    list_display = ('autor', 'postagem', 'data_criacao')
+    list_filter = ('data_criacao', 'autor')
+    search_fields = ('conteudo', 'autor__username', 'postagem__titulo')
 
 from django.contrib import admin
 from .models import Postagem, Comentario
@@ -72,4 +92,6 @@ class ComentarioAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Produto, ProdutoAdmin)
 admin.site.register(models.Variacao)
-admin.site.register(models.Category)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(SubCategory)
+admin.site.register(Contato)
